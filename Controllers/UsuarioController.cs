@@ -1,4 +1,5 @@
-﻿using MGL_API.Model.Entrada;
+﻿using MGL_API.db;
+using MGL_API.Model.Entrada;
 using MGL_API.Model.Saida;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -18,15 +19,26 @@ namespace MGL_API.Controllers
 
         public UsuarioController(IConfiguration configuration)
         {
-            this.Configuration = configuration;
+            Configuration = configuration;
         }
 
         [HttpGet]
         [Route("Cadastro")]
         public RetornoCadastroUsuario CadastraUsuario (EntradaCadastroUsuario entrada)
         {
+
+            #region Validar Entradas
+
+            #endregion
+
             RetornoCadastroUsuario retorno = new RetornoCadastroUsuario();
-            return retorno;
+
+            using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+            {
+                RetornoCadastroUsuario cadastro = db.CadastrarUsuario(entrada);
+            }
+
+                return retorno;
         }
 
     }

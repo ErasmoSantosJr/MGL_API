@@ -11,6 +11,6 @@ namespace MGL_API.Model.Entrada
         public string Email { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public DateTime DataNascimento { get; set; }
+        public string DataNascimento { get; set; }
     }
 }
