@@ -21,13 +21,23 @@ namespace MGL_API.db
 
         public RetornoCadastroUsuario CadastrarUsuario(EntradaCadastroUsuario entrada)
         {
+            RetornoCadastroUsuario retorno = new RetornoCadastroUsuario();
             string sql = "insert into Usuario (Nome_Usuario, Email_Usuario, Login_Usuario, Password_Usuario, IdCatalogo_Usuario, ADM_Usuario, DataCriacao_Usuario) Values (@Nome, @Email, @Login, @Password, @Catalogo, @ADM, @Data)";
 
-            conexao.Execute(sql, new { @Nome = entrada.Nome, @Email = entrada.Email, @Login = entrada.Login, @Password = entrada.Password, @Catalogo = 1, @ADM = 0, @Data = entrada.DataNascimento });
+            try
+            {
+                conexao.Execute(sql, new { @Nome = entrada.Nome, @Email = entrada.Email, @Login = entrada.Login, @Password = entrada.Password, @Catalogo = 1, @ADM = 0, @Data = entrada.DataNascimento });
 
-            RetornoCadastroUsuario retorno = new RetornoCadastroUsuario();
+                retorno.Login = entrada.Login;
 
-            return retorno;
+                return retorno;
+            }
+            catch
+            {
+                retorno.Sucesso = false;
+                retorno.Mensagem = "Erro ao cadastrar usuário no Banco de dados";
+                return retorno;
+            }
         }
 
         public void Dispose()

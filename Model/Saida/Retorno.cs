@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace MGL_API.Model.Saida
 {
-    public class RetornoCadastroUsuario
+    public class Retorno
     {
+        public bool Sucesso { get; set; }
+        public string Mensagem { get; set; }
     }
 }

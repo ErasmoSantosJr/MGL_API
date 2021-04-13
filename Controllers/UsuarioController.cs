@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace MGL_API.Controllers
@@ -24,22 +25,62 @@ namespace MGL_API.Controllers
 
         [HttpGet]
         [Route("Cadastro")]
-        public RetornoCadastroUsuario CadastraUsuario (EntradaCadastroUsuario entrada)
+        public ActionResult<RetornoCadastroUsuario> CadastraUsuario(EntradaCadastroUsuario entrada)
         {
-
+            string msg = "";
             #region Validar Entradas
 
+            if (string.IsNullOrEmpty(entrada.Nome))
+            {
+                msg = "A variável Nome é obrigatório!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.Email))
+            {
+                msg = "A variável Email é obrigatório!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.Login))
+            {
+                msg = "A variável Login é obrigatório!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.Password))
+            {
+                msg = "A variável Password é obrigatório!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.DataNascimento))
+            {
+                msg = "A variável DataNascimento é obrigatório!";
+            }
+
+            if (!string.IsNullOrEmpty(msg))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = msg };
+            }
             #endregion
 
             RetornoCadastroUsuario retorno = new RetornoCadastroUsuario();
 
-            using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+            try
             {
-                RetornoCadastroUsuario cadastro = db.CadastrarUsuario(entrada);
-            }
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+                    retorno = db.CadastrarUsuario(entrada);
+
+                    retorno.Mensagem = "Usuário cadastrado com sucesso!";
+                    retorno.Sucesso = true;
+                }
 
                 return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao cadastrar Usuário."};
+            }
         }
+
 
     }
 }
