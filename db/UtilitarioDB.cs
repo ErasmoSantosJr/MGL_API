@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using MGL_API.Model.Entity.Usuario;
 
 namespace MGL_API.db
 {
@@ -29,6 +30,17 @@ namespace MGL_API.db
             conexao.Execute(sql, new { @Nome = entrada.Nome, @Email = entrada.Email, @Login = entrada.Login, @Password = entrada.Password, @Catalogo = 1, @ADM = 0, @DataCriacao = dataAtual, @DataNascimento = entrada.DataNascimento });
 
             retorno.Login = entrada.Login;
+
+            return retorno;
+
+        }
+
+        public UsuarioEntity LogarUsuario(EntradaLoginUsuario entrada)
+        {
+            UsuarioEntity retorno = new UsuarioEntity();
+
+            retorno = conexao.QueryFirstOrDefault<UsuarioEntity>(@"SELECT * from Usuario WHERE Email_Usuario = @email and Password_Usuario = @Password ", new
+            { @Email = entrada.Email, @Password = entrada.Password });
 
             return retorno;
 
