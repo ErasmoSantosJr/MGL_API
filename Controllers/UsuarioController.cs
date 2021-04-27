@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 //Controle Usuario
+//Controle usuario2
 namespace MGL_API.Controllers
 {
     [Route("api/[controller]")]
