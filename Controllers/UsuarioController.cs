@@ -2,6 +2,7 @@
 using MGL_API.Model.Entity.Usuario;
 using MGL_API.Model.Entrada;
 using MGL_API.Model.Saida;
+using MGL_API.Model.Saida.Game;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;

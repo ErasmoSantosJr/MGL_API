@@ -1,5 +1,6 @@
 ﻿using MGL_API.Model.Entrada;
 using MGL_API.Model.Saida;
+using MGL_API.Model.Saida.Game;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using MGL_API.Model.Entity.Usuario;
+using MGL_API.Model.Entity.Game;
 
 namespace MGL_API.db
 {
@@ -18,6 +20,19 @@ namespace MGL_API.db
         {
             conexao = new SqlConnection(queryString);
             conexao.Open();
+        }
+        //Tentei reproduzir o CadastrarUsuario mas alterando as variaveis e insert de acordo com a tabela Game do banco de dados
+        public RetornoCadastroGame CadastrarGame(EntradaCadastroGame entrada) {
+            RetornoCadastroGame retorno = new RetornoCadastroGame();
+            DateTime dataAtual = DateTime.Now;
+            string sql = "insert into Game (Nome_Game, Descricao_Game, IdCategoria_Game, SRC_Imagem_Game, DataCriacao_Game) Values (@Nome, @Descricao, @IdCategoria, @SRC_Imagem, @DataCricao)";
+
+
+            conexao.Execute(sql, new { @Nome = entrada.Nome, @Descricao = entrada.Descricao, @IdCategoria = entrada.Categoria, @SRC_Imagem = "Sem Imagem", @DataCriacao = dataAtual });
+            retorno.Game = entrada.Nome;
+
+            return retorno;
+
         }
 
         public RetornoCadastroUsuario CadastrarUsuario(EntradaCadastroUsuario entrada)
@@ -45,6 +60,9 @@ namespace MGL_API.db
             return retorno;
 
         }
+
+        
+
 
         public void Dispose()
         {
