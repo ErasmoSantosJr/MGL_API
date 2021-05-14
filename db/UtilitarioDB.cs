@@ -10,14 +10,11 @@ using Dapper;
 using MGL_API.Model.Entity.Usuario;
 using MGL_API.Model.Entity.Game;
 
-namespace MGL_API.db
-{
-    public class UtilitarioDB : IDisposable
-    {
+namespace MGL_API.db {
+    public class UtilitarioDB : IDisposable {
         private SqlConnection conexao;
 
-        public UtilitarioDB(string queryString)
-        {
+        public UtilitarioDB(string queryString) {
             conexao = new SqlConnection(queryString);
             conexao.Open();
         }
@@ -25,18 +22,17 @@ namespace MGL_API.db
         public RetornoCadastroGame CadastrarGame(EntradaCadastroGame entrada) {
             RetornoCadastroGame retorno = new RetornoCadastroGame();
             DateTime dataAtual = DateTime.Now;
-            string sql = "insert into Game (Nome_Game, Descricao_Game, IdCategoria_Game, SRC_Imagem_Game, DataCriacao_Game) Values (@Nome, @Descricao, @IdCategoria, @SRC_Imagem, @DataCricao)";
+            string sql = "insert into Game (Nome_Game, Descricao_Game, IdCategoria_Game, SRC_Imagem_Game, DataCriacao_Game) Values (@Nome, @Descricao, @IdCategoria, @SRC_Imagem, @DataCriacao)";
 
 
-            conexao.Execute(sql, new { @Nome = entrada.Nome, @Descricao = entrada.Descricao, @IdCategoria = entrada.Categoria, @SRC_Imagem = "Sem Imagem", @DataCriacao = dataAtual });
+            conexao.Execute(sql, new { @Nome = entrada.Nome, @Descricao = entrada.Descricao, @IdCategoria = entrada.Categoria, @SRC_Imagem = "Sem Imagem", @DataCriacao = "2001-02-02" });
             retorno.Game = entrada.Nome;
 
             return retorno;
 
         }
 
-        public RetornoCadastroUsuario CadastrarUsuario(EntradaCadastroUsuario entrada)
-        {
+        public RetornoCadastroUsuario CadastrarUsuario(EntradaCadastroUsuario entrada) {
             RetornoCadastroUsuario retorno = new RetornoCadastroUsuario();
             DateTime dataAtual = DateTime.Now;
             string sql = "insert into Usuario (Nome_Usuario, Email_Usuario, Login_Usuario, Password_Usuario, IdCatalogo_Usuario, ADM_Usuario, DataCriacao_Usuario, DataNascimento_Usuario) Values (@Nome, @Email, @Login, @Password, @Catalogo, @ADM, @DataCriacao, @DataNascimento)";
@@ -50,22 +46,17 @@ namespace MGL_API.db
 
         }
 
-        public UsuarioEntity LogarUsuario(EntradaLoginUsuario entrada)
-        {
+        public UsuarioEntity LogarUsuario(EntradaLoginUsuario entrada) {
             UsuarioEntity retorno = new UsuarioEntity();
 
-            retorno = conexao.QueryFirstOrDefault<UsuarioEntity>(@"SELECT * from Usuario WHERE Email_Usuario = @email and Password_Usuario = @Password ", new
-            { @Email = entrada.Email, @Password = entrada.Password });
+            retorno = conexao.QueryFirstOrDefault<UsuarioEntity>(@"SELECT * from Usuario WHERE Email_Usuario = @email and Password_Usuario = @Password ", new { @Email = entrada.Email, @Password = entrada.Password });
 
             return retorno;
 
         }
 
-        
 
-
-        public void Dispose()
-        {
+        public void Dispose() {
             conexao.Close();
             conexao.Dispose();
         }
