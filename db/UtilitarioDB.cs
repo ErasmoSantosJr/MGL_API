@@ -32,6 +32,16 @@ namespace MGL_API.db {
 
         }
 
+        public RetornoExibirGame ExibirGame(EntradaExibirGame entrada)
+        {
+            RetornoExibirGame retorno = new RetornoExibirGame();
+            string sql = "select from Game where idGame = @idGame";
+            conexao.Execute(sql, new { @id = entrada.idGame});
+
+
+            return retorno;
+        }
+
         public RetornoCadastroUsuario CadastrarUsuario(EntradaCadastroUsuario entrada) {
             RetornoCadastroUsuario retorno = new RetornoCadastroUsuario();
             DateTime dataAtual = DateTime.Now;

@@ -25,7 +25,8 @@ namespace MGL_API.Controllers {
         }
         [HttpPost]
         [Route("CadastroGame")]
-        public ActionResult<RetornoCadastroGame> CadastraGame(EntradaCadastroGame entrada) {
+        public ActionResult<RetornoCadastroGame> CadastraGame(EntradaCadastroGame entrada) 
+            {
             string msg = "";
             #region Validar Entradas
 
@@ -63,6 +64,26 @@ namespace MGL_API.Controllers {
             }
         }
 
+
+        [HttpPost]
+        [Route("ExibirGame")]
+
+        public ActionResult<RetornoExibirGame> ExibirGameId(EntradaExibirGame entrada) 
+        {
+            RetornoExibirGame retorno = new RetornoExibirGame();
+            try {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"))) {
+                    retorno = db.ExibirGame(entrada);                    
+                    retorno.Sucesso = true;
+
+                }
+
+                return retorno;
+            }
+            catch {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao exibir Game." };
+            }
+        }
 
     }
 }
