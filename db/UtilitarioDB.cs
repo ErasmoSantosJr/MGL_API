@@ -35,9 +35,8 @@ namespace MGL_API.db {
         public RetornoExibirGame ExibirGame(EntradaExibirGame entrada)
         {
             RetornoExibirGame retorno = new RetornoExibirGame();
-            string sql = "select from Game where idGame = @idGame";
-            conexao.Execute(sql, new { @id = entrada.idGame});
-
+            string sql = "select * from Game where idGame = @idGame";
+            conexao.Execute(sql, new { @idGame = entrada.idGame})
 
             return retorno;
         }

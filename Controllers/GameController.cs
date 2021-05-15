@@ -71,7 +71,9 @@ namespace MGL_API.Controllers {
         public ActionResult<RetornoExibirGame> ExibirGameId(EntradaExibirGame entrada) 
         {
             RetornoExibirGame retorno = new RetornoExibirGame();
-            try {
+            try 
+            {
+
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"))) {
                     retorno = db.ExibirGame(entrada);                    
                     retorno.Sucesso = true;
@@ -80,8 +82,9 @@ namespace MGL_API.Controllers {
 
                 return retorno;
             }
-            catch {
-                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao exibir Game." };
+            catch
+           {
+              return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao exibir Game." };
             }
         }
 
