@@ -17,7 +17,7 @@ namespace MGL_API.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class GameController : ControllerBase
-        {
+    {
         protected IConfiguration Configuration;
 
         public GameController(IConfiguration configuration) {
@@ -25,27 +25,58 @@ namespace MGL_API.Controllers {
         }
         [HttpPost]
         [Route("CadastroGame")]
-        public ActionResult<RetornoCadastroGame> CadastraGame(EntradaCadastroGame entrada) 
-            {
+        public ActionResult<RetornoCadastroGame> CadastraGame(EntradaCadastroGame entrada)
+        {
             string msg = "";
             #region Validar Entradas
 
             if (string.IsNullOrEmpty(entrada.Nome)) {
-                msg = "A variável Nome é obrigatório!";
+                msg = "A variável Nome é obrigatória!";
             }
 
             if (string.IsNullOrEmpty(entrada.Descricao)) {
-                msg = "A variável Descrição é obrigatório!";
+                msg = "A variável Descrição é obrigatória!";
             }
 
             if (string.IsNullOrEmpty(entrada.Categoria)) {
-                msg = "A variável Categoria é obrigatório!";
+                msg = "A variável Categoria é obrigatória!";
             }
 
+            if (string.IsNullOrEmpty(entrada.Lancamento))
+            {
+                msg = "A variável Data de lançamento é obrigatória!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.Requisitos))
+            {
+                msg = "A variável Requisitos é obrigatória!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.Desenvolvedora))
+            {
+                msg = "A variável Desenvolvedora é obrigatória!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.Publicadora))
+            {
+                msg = "A variável Publicadora é obrigatória!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.Plataformas))
+            {
+                msg = "A variável Plataformas é obrigatória!";
+            }
+
+            if (string.IsNullOrEmpty(entrada.Classificacao))
+            {
+                msg = "A variável Classificação é obrigatória!";
+            }
             if (!string.IsNullOrEmpty(msg)) {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = msg };
             }
+
             #endregion
+
 
             RetornoCadastroGame retorno = new RetornoCadastroGame();
             //A parte que em teoria cadastra o jogo no banco de dados, o código do db.CadastrarGame fica no UtilitarioDB
@@ -68,14 +99,14 @@ namespace MGL_API.Controllers {
         [HttpPost]
         [Route("ExibirGame")]
 
-        public ActionResult<RetornoExibirGame> ExibirGameId(EntradaExibirGame entrada) 
+        public ActionResult<RetornoExibirGame> ExibirGameId(EntradaExibirGame entrada)
         {
             RetornoExibirGame retorno = new RetornoExibirGame();
-            try 
+            try
             {
 
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"))) {
-                    retorno = db.ExibirGame(entrada);                    
+                    retorno = db.ExibirGame(entrada);
                     retorno.Sucesso = true;
 
                 }
@@ -83,10 +114,36 @@ namespace MGL_API.Controllers {
                 return retorno;
             }
             catch
-           {
-              return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao exibir Game." };
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao exibir Game." };
             }
         }
+
+        //Ainda em contrução
+        [HttpPost]
+        [Route("AvaliarGame")]
+        public ActionResult<RetornoAvaliarGame> AvaliarGame(EntradaAvaliarGame entrada)
+        {
+            RetornoAvaliarGame retorno = new RetornoAvaliarGame();
+            try
+            {
+
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+                    retorno = db.AvaliarGame(entrada);
+                    retorno.Sucesso = true;
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao exibir Game." };
+            }
+        }
+
+
 
     }
 }

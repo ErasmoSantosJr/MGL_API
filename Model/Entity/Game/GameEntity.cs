@@ -12,5 +12,10 @@ namespace MGL_API.Model.Entity.Game {
         public string idCategoria_Game { get; set; }
         public string SRC_Imagem_Game { get; set; }
         public DateTime DataCriacao_Game { get; set; }
+        public string Requisitos_Game { get; set; }
+        public string Desenvolvedora_Game { get; set; }
+        public string Publicadora_Game { get; set; }
+        public string Plataformas_Game { get; set; }
+        public string Classificacao_Game { get; set; }
     }
 }

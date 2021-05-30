@@ -21,25 +21,35 @@ namespace MGL_API.db {
         //Tentei reproduzir o CadastrarUsuario mas alterando as variaveis e insert de acordo com a tabela Game do banco de dados
         public RetornoCadastroGame CadastrarGame(EntradaCadastroGame entrada) {
             RetornoCadastroGame retorno = new RetornoCadastroGame();
-            DateTime dataAtual = DateTime.Now;
-            string sql = "insert into Game (Nome_Game, Descricao_Game, IdCategoria_Game, SRC_Imagem_Game, DataCriacao_Game) Values (@Nome, @Descricao, @IdCategoria, @SRC_Imagem, @DataCriacao)";
+            //DateTime dataAtual = DateTime.Now;
+            string sql = "insert into Game (Nome_Game, Descricao_Game, IdCategoria_Game, SRC_Imagem_Game, DataCriacao_Game, Requisitos_Game, " +
+                " Desenvolvedora_Game, Publicadora_Game, Plataformas_Game, Classificacao_Game) " +
+                "Values (@Nome, @Descricao, @IdCategoria, @SRC_Imagem, @DataCriacao, @Requisitos, @Desenvolvedora, @Publicadora, @Plataformas, @Classificacao)";
 
 
-            conexao.Execute(sql, new { @Nome = entrada.Nome, @Descricao = entrada.Descricao, @IdCategoria = entrada.Categoria, @SRC_Imagem = "Sem Imagem", @DataCriacao = "2001-02-02" });
+            conexao.Execute(sql, new { @Nome = entrada.Nome, @Descricao = entrada.Descricao, @IdCategoria = entrada.Categoria, @SRC_Imagem = "Sem Imagem", @DataCriacao = entrada.Lancamento, @Requisitos = entrada.Requisitos, @Desenvolvedora = entrada.Desenvolvedora, @Publicadora = entrada.Publicadora, @Plataformas = entrada.Plataformas, @Classificacao = entrada.Classificacao });
             retorno.Game = entrada.Nome;
 
             return retorno;
 
         }
-
+        //Tentando arrumar o bug na hora de exibir o game antes de continuar com a parte da avaliação
         public RetornoExibirGame ExibirGame(EntradaExibirGame entrada)
         {
             RetornoExibirGame retorno = new RetornoExibirGame();
             string sql = "select * from Game where idGame = @idGame";
-            conexao.Execute(sql, new { @idGame = entrada.idGame})
-
+            
+            conexao.Execute(sql, new { @idGame = entrada.idGame });
+            
             return retorno;
         }
+        //Ainda em construção
+        public RetornoAvaliarGame AvaliarGame(EntradaAvaliarGame entrada)
+        {
+            RetornoAvaliarGame retorno = new RetornoAvaliarGame();
+            return retorno;
+        }
+
 
         public RetornoCadastroUsuario CadastrarUsuario(EntradaCadastroUsuario entrada) {
             RetornoCadastroUsuario retorno = new RetornoCadastroUsuario();
