@@ -8,6 +8,7 @@ using MGL_API.Model.Entity.Game;
 using MGL_API.Model.Entrada;
 using MGL_API.Model.Saida;
 using MGL_API.Model.Saida.Game;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -99,8 +100,23 @@ namespace MGL_API.Controllers {
         [HttpPost]
         [Route("ExibirGame")]
 
+
         public ActionResult<RetornoExibirGame> ExibirGameId(EntradaExibirGame entrada)
         {
+            /*
+            string msg = "";
+            #region Validar Entradas
+
+            if (entrada.IdGame == null)
+            {
+                msg = "A variável IdGame é obrigatória!";
+            }
+            if (!string.IsNullOrEmpty(msg))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = msg };
+            }
+            #endregion
+            */
             RetornoExibirGame retorno = new RetornoExibirGame();
             try
             {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MGL_API.Model.Entrada {
     public class EntradaExibirGame {
-        public int idGame { get; set; }
+        public int IdGame { get; set; }
 
     }
 }
