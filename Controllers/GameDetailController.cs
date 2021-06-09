@@ -1,4 +1,5 @@
 ﻿using MGL_API.db;
+using MGL_API.Model.Entity.GameDetail;
 using MGL_API.Model.Entrada.GameDetail;
 using MGL_API.Model.Saida.GameDetail;
 using Microsoft.AspNetCore.Mvc;
@@ -109,6 +110,75 @@ namespace MGL_API.Controllers
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao deletar Armazenamento." };
             }
+        }
+
+        [HttpGet]
+        [Route("ObterListaArmazenamento")]
+        public ActionResult<List<RetornoObterArmazenamento>> ObterListaArmazenamento()
+        {
+
+            List<RetornoObterArmazenamento> retorno = new List<RetornoObterArmazenamento>();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    List<ObterArmazenamentoEntity> lista = db.ObterListaArmazenamento();
+
+
+                    foreach (ObterArmazenamentoEntity item in lista)
+                    {
+                        retorno.Add(
+                          new RetornoObterArmazenamento()
+                          {
+                              CodigoArmazenamento = item.CodArmazenamento,
+                              NomeArmazenamento = item.NomeArmazenamento,
+                              Sucesso = true,
+                              Mensagem = "Lista de armazenamento recuperado com sucesso."
+                          }
+                            );
+                    }
+                    return retorno;
+                }
+
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de armazenamento." };
+            }
+
+        }
+
+        [HttpGet]
+        [Route("ObterArmazenamentoGame")]
+        public ActionResult<RetornoObterArmazenamento> ObterArmazenamento()
+        {
+
+            RetornoObterArmazenamento retorno = new RetornoObterArmazenamento();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    ObterArmazenamentoEntity lista = db.ObterArmazenamento();
+
+
+                    retorno.CodigoArmazenamento = lista.CodArmazenamento;
+                    retorno.NomeArmazenamento = lista.NomeArmazenamento;
+                    retorno.Sucesso = true;
+                    retorno.Mensagem = "Lista de armazenamento recuperado com sucesso.";
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de armazenamento." };
+            }
+
         }
 
         #endregion
@@ -661,3 +731,4 @@ namespace MGL_API.Controllers
 
     }
 }
+

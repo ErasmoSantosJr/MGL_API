@@ -84,6 +84,27 @@ namespace MGL_API.db
             }
         }
 
+        public List<ObterArmazenamentoEntity> ObterListaArmazenamento() 
+        {
+            List<ObterArmazenamentoEntity> retorno = conexao.Query<ObterArmazenamentoEntity>
+                ("select * from Armazenamento where CodVisibilidade = 0").ToList();
+
+            return retorno;
+        }
+
+        public ObterArmazenamentoEntity ObterArmazenamento()
+        {
+            ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
+                ("select CodDetalheArmazenamento from Detalhes where CodGameDetalhe = 1");
+
+            string sql = "select * from Armazenamento where CodArmazenamento = @cod and CodVisibilidade = 0";
+               
+            ObterArmazenamentoEntity retorno = conexao.QueryFirstOrDefault<ObterArmazenamentoEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.CodDetalheArmazenamento) });
+
+            return retorno;
+        }
+
         #endregion
 
         #region GameDetail Classificacao
