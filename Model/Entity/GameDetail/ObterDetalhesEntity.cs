@@ -7,13 +7,16 @@ namespace MGL_API.Model.Entity.GameDetail
 {
     public class ObterDetalhesEntity
     {
-        public int CodDetalhe { get; set; }
-        public int CodClassDetalhe { get; set; }
-        public int CodDetalheSO { get; set; }
-        public int CodProcesso { get; set; }
-        public int CodDetalhePlacaVideo { get; set; }
-        public int CodDetalheArmazenamento { get; set; }
-        public int CodDetalhePlataforma { get; set; }
+        public int CodDetalhes { get; set; }
+        public int CodGame { get; set; }
+        public int CodVisibilidade { get; set; }
+        public int CodDetalhesClass { get; set; }
+        public int CodDetalhesSO { get; set; }
+        public int CodDetalhesProcessador { get; set; }
+        public int CodDetalhesPlacaVideo { get; set; }
+        public int CodDetalhesMemoria { get; set; }
+        public int CodDetalhesArmazenamento { get; set; }
+        public int CodDetalhesPlataforma { get; set; }
         public DateTime DataCadastro { get; set; }
 
     }

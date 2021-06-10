@@ -13,15 +13,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 using System.Net;
+using MGL_API.Model.Entity.GameDetail;
 //Basicamente copiei e colei do UsuarioController e alterei o que achei necessario pro jogo
-namespace MGL_API.Controllers {
+namespace MGL_API.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     public class GameController : ControllerBase
     {
         protected IConfiguration Configuration;
 
-        public GameController(IConfiguration configuration) {
+        public GameController(IConfiguration configuration)
+        {
             Configuration = configuration;
         }
         [HttpPost]
@@ -31,15 +34,18 @@ namespace MGL_API.Controllers {
             string msg = "";
             #region Validar Entradas
 
-            if (string.IsNullOrEmpty(entrada.Nome)) {
+            if (string.IsNullOrEmpty(entrada.Nome))
+            {
                 msg = "A variável Nome é obrigatória!";
             }
 
-            if (string.IsNullOrEmpty(entrada.Descricao)) {
+            if (string.IsNullOrEmpty(entrada.Descricao))
+            {
                 msg = "A variável Descrição é obrigatória!";
             }
 
-            if (string.IsNullOrEmpty(entrada.Categoria)) {
+            if (string.IsNullOrEmpty(entrada.Categoria))
+            {
                 msg = "A variável Categoria é obrigatória!";
             }
 
@@ -72,7 +78,8 @@ namespace MGL_API.Controllers {
             {
                 msg = "A variável Classificação é obrigatória!";
             }
-            if (!string.IsNullOrEmpty(msg)) {
+            if (!string.IsNullOrEmpty(msg))
+            {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = msg };
             }
 
@@ -81,8 +88,10 @@ namespace MGL_API.Controllers {
 
             RetornoCadastroGame retorno = new RetornoCadastroGame();
             //A parte que em teoria cadastra o jogo no banco de dados, o código do db.CadastrarGame fica no UtilitarioDB
-            try {
-                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"))) {
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
                     retorno = db.CadastrarGame(entrada);
 
                     retorno.Mensagem = "Game cadastrado com sucesso!";
@@ -91,62 +100,83 @@ namespace MGL_API.Controllers {
 
                 return retorno;
             }
-            catch {
+            catch
+            {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao cadastrar Game." };
             }
         }
 
 
         [HttpPost]
-        [Route("ExibirGame")]
-
-
-        public ActionResult<RetornoExibirGame> ExibirGameId(EntradaExibirGame entrada)
+        [Route("ObterListaGame")]
+        public ActionResult<List<RetornoListaObterGame>> ObterGame()
         {
-            /*
-            string msg = "";
-            #region Validar Entradas
 
-            if (entrada.IdGame == null)
-            {
-                msg = "A variável IdGame é obrigatória!";
-            }
-            if (!string.IsNullOrEmpty(msg))
-            {
-                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = msg };
-            }
-            #endregion
-            */
-            RetornoExibirGame retorno = new RetornoExibirGame();
+            List<RetornoListaObterGame> retorno = new List<RetornoListaObterGame>();
+
             try
             {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
 
-                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"))) {
-                    retorno = db.ExibirGame(entrada);
-                    retorno.Sucesso = true;
+                    List<ObterGameEntity> lista = db.ObterListaGame();
 
+
+                    foreach (ObterGameEntity item in lista)
+                    {
+                        retorno.Add(
+                          new RetornoListaObterGame()
+                          {
+                              CodigoGame = item.IdGame,
+                              NomeGame = item.Nome_Game,
+                              Sucesso = true,
+                              Mensagem = "Lista de Games recuperado com sucesso."
+                          }
+                            );
+                    }
+                    return retorno;
                 }
 
-                return retorno;
             }
             catch
             {
-                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao exibir Game." };
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de armazenamento." };
             }
+
         }
 
-        //Ainda em contrução
+
         [HttpPost]
-        [Route("AvaliarGame")]
-        public ActionResult<RetornoAvaliarGame> AvaliarGame(EntradaAvaliarGame entrada)
+        [Route("ObterGame")]
+        public ActionResult<RetornoObterGame> ObterGame(EntradaObterGame entrada)
         {
-            RetornoAvaliarGame retorno = new RetornoAvaliarGame();
+
+            #region Valida entrada
+
+
+            if (entrada.CodigoGame.Equals(null))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Necessário inserir o parâmetro CodigoGame." };
+            }
+
+            #endregion
+
+            RetornoObterGame retorno = new RetornoObterGame();
             try
             {
 
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
                 {
-                    retorno = db.AvaliarGame(entrada);
+
+
+                    ObterGameEntity lista = db.ObterGame();
+
+                    retorno.CodigoGame = lista.IdGame;
+                    retorno.NomeGame = lista.Nome_Game;
+                    retorno.DescricaoGame = lista.Descricao_Game;
+                    retorno.IdCategoriaGame = lista.IdCategoria_Game;
+                    retorno.SrcImagemGame = lista.SRC_Imagem_Game;
+                    retorno.Mensagem = "Sucesso ao recuperar Game";
                     retorno.Sucesso = true;
 
                 }
@@ -158,8 +188,6 @@ namespace MGL_API.Controllers {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao exibir Game." };
             }
         }
-
-
 
     }
 }

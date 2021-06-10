@@ -1,5 +1,6 @@
 ﻿using MGL_API.db;
 using MGL_API.Model.Entity.GameDetail;
+using MGL_API.Model.Entrada.Game;
 using MGL_API.Model.Entrada.GameDetail;
 using MGL_API.Model.Saida.GameDetail;
 using Microsoft.AspNetCore.Mvc;
@@ -150,10 +151,19 @@ namespace MGL_API.Controllers
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("ObterArmazenamentoGame")]
-        public ActionResult<RetornoObterArmazenamento> ObterArmazenamento()
+        public ActionResult<RetornoObterArmazenamento> ObterArmazenamento(EntradaObterArmazenamento entrada)
         {
+
+            #region Validar Entradas
+
+            if (entrada.CodigoGame.Equals(""))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
+            }
+
+            #endregion
 
             RetornoObterArmazenamento retorno = new RetornoObterArmazenamento();
 
@@ -162,7 +172,7 @@ namespace MGL_API.Controllers
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
                 {
 
-                    ObterArmazenamentoEntity lista = db.ObterArmazenamento();
+                    ObterArmazenamentoEntity lista = db.ObterArmazenamento(entrada);
 
 
                     retorno.CodigoArmazenamento = lista.CodArmazenamento;

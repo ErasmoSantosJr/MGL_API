@@ -11,6 +11,7 @@ using MGL_API.Model.Entity.GameDetail;
 using MGL_API.Model.Entrada.GameDetail;
 using MGL_API.Model.Saida.GameDetail;
 using MGL_API.Model.Saida.Game;
+using MGL_API.Model.Entrada.Game;
 
 namespace MGL_API.db
 {
@@ -93,15 +94,16 @@ namespace MGL_API.db
             return retorno;
         }
 
-        public ObterArmazenamentoEntity ObterArmazenamento()
+        public ObterArmazenamentoEntity ObterArmazenamento(EntradaObterArmazenamento entrada)
         {
             ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
-                ("select CodDetalheArmazenamento from Detalhes where CodGameDetalhe = 1");
+                ("select CodDetalhesArmazenamento from Detalhes where CodGame = @cod",
+                new { @cod = entrada.CodigoGame});
 
             string sql = "select * from Armazenamento where CodArmazenamento = @cod and CodVisibilidade = 0";
 
             ObterArmazenamentoEntity retorno = conexao.QueryFirstOrDefault<ObterArmazenamentoEntity>(
-                sql, new { @cod = Convert.ToInt32(codigo.CodDetalheArmazenamento) });
+                sql, new { @cod = Convert.ToInt32(codigo.CodDetalhesArmazenamento) });
 
             return retorno;
         }
@@ -342,96 +344,23 @@ namespace MGL_API.db
 
         }
         //Tentando arrumar o bug na hora de exibir o game antes de continuar com a parte da avaliação
-        public RetornoExibirGame ExibirGame(EntradaExibirGame entrada)
+
+        public ObterGameEntity ObterGame()
         {
-            RetornoExibirGame retorno = new RetornoExibirGame();
-            //string com o comando SQL pra buscar o nome do game
-            string nomeGame = "select Nome_Game from Game where IdGame = @IdGame";
-            SqlCommand GetNome = conexao.CreateCommand();
-            //Parametro entrada.IdGame;
-            GetNome.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetNome.CommandText = nomeGame;
-            //Converte o resultado do select pra string e armazena no retorno
-            string retornoNome = (string)GetNome.ExecuteScalar();
-            //Atribui o valor do retornoNome
-            retorno.Nome_Game = retornoNome;
 
-            string descricaoGame = "select Descricao_Game from Game where IdGame = @IdGame";
-            SqlCommand GetDescricao = conexao.CreateCommand();
-            GetDescricao.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetDescricao.CommandText = descricaoGame;
-            string retornoDescricao = (string)GetDescricao.ExecuteScalar();
-            retorno.Descricao_Game = retornoDescricao;
+            ObterGameEntity lista = conexao.QueryFirstOrDefault<ObterGameEntity>
+                  ("select * from Game");
 
-
-            string categoriaGame = "select IdCategoria_Game from Game where IdGame = @IdGame";
-            SqlCommand GetCategoria = conexao.CreateCommand();
-            GetCategoria.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetCategoria.CommandText = categoriaGame;
-            int retornoCategoria = (int)GetCategoria.ExecuteScalar();
-            retorno.IdCategoria_Game = retornoCategoria;
-
-
-            string imagemGame = "select SRC_Imagem_Game from Game where IdGame = @IdGame";
-            SqlCommand GetImagem = conexao.CreateCommand();
-            GetImagem.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetImagem.CommandText = imagemGame;
-            string retornoImagem = (string)GetImagem.ExecuteScalar();
-            retorno.SRC_Imagem_Game = retornoImagem;
-
-            string dataGame = "select DataCriacao_Game from Game where IdGame = @IdGame";
-            SqlCommand GetData = conexao.CreateCommand();
-            GetData.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetData.CommandText = dataGame;
-            DateTime retornoData = (DateTime)GetData.ExecuteScalar();
-            retorno.DataCriacao_Game = retornoData;
-
-            string requisitosGame = "select Requisitos_Game from Game where IdGame = @IdGame";
-            SqlCommand GetRequisitos = conexao.CreateCommand();
-            GetRequisitos.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetRequisitos.CommandText = requisitosGame;
-            string retornoRequisitos = (string)GetRequisitos.ExecuteScalar();
-            retorno.Requisitos_Game = retornoRequisitos;
-
-            string desenvolvedoraGame = "select Desenvolvedora_Game from Game where IdGame = @IdGame";
-            SqlCommand GetDesenvolvedora = conexao.CreateCommand();
-            GetDesenvolvedora.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetDesenvolvedora.CommandText = desenvolvedoraGame;
-            string retornoDesenvolvedora = (string)GetDesenvolvedora.ExecuteScalar();
-            retorno.Desenvolvedora_Game = retornoDesenvolvedora;
-
-            string publicadoraGame = "select Publicadora_Game from Game where IdGame = @IdGame";
-            SqlCommand GetPublicadora = conexao.CreateCommand();
-            GetPublicadora.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetPublicadora.CommandText = publicadoraGame;
-            string retornoPublicadora = (string)GetPublicadora.ExecuteScalar();
-            retorno.Publicadora_Game = retornoPublicadora;
-
-            string plataformasGame = "select Plataformas_Game from Game where IdGame = @IdGame";
-            SqlCommand GetPlataformas = conexao.CreateCommand();
-            GetPlataformas.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetPlataformas.CommandText = plataformasGame;
-            string retornoPlataformas = (string)GetPlataformas.ExecuteScalar();
-            retorno.Plataformas_Game = retornoPlataformas;
-
-            string classificacaoGame = "select Classificacao_Game from Game where IdGame = @IdGame";
-            SqlCommand GetClassificacao = conexao.CreateCommand();
-            GetClassificacao.Parameters.AddWithValue("@IdGame", entrada.IdGame);
-            GetClassificacao.CommandText = classificacaoGame;
-            string retornoClassificacao = (string)GetClassificacao.ExecuteScalar();
-            retorno.Classificacao_Game = retornoClassificacao;
-
-
-
-            return retorno;
+            return lista;
         }
-        //Ainda em construção
-        public RetornoAvaliarGame AvaliarGame(EntradaAvaliarGame entrada)
+
+        public List<ObterGameEntity> ObterListaGame()
         {
-            RetornoAvaliarGame retorno = new RetornoAvaliarGame();
 
+            List<ObterGameEntity> lista = conexao.Query<ObterGameEntity>
+                  ("select * from Game").ToList();
 
-            return retorno;
+            return lista;
         }
 
         #endregion
