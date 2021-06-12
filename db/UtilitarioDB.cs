@@ -143,6 +143,27 @@ namespace MGL_API.db
             }
         }
 
+        public List<ObterClassificacaoEntity> ObterListaClassificacao()
+        {
+            List<ObterClassificacaoEntity> retorno = conexao.Query<ObterClassificacaoEntity>
+                ("select * from Classificacao where CodVisibilidade = 0").ToList();
+
+            return retorno;
+        }
+        public ObterClassificacaoEntity ObterClassificacao(EntradaObterClassificacao entrada)
+        {
+            ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
+                ("select CodDetalhesClass from Detalhes where CodGame = @cod",
+                new { @cod = entrada.CodigoGame });
+
+            string sql = "select * from Classificacao where CodClassificacao = @cod and CodVisibilidade = 0";
+
+            ObterClassificacaoEntity retorno = conexao.QueryFirstOrDefault<ObterClassificacaoEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.CodDetalhesClass) });
+
+            return retorno;
+        }
+
         #endregion
 
         #region GameDetail Memoria
@@ -177,6 +198,28 @@ namespace MGL_API.db
             {
                 return false;
             }
+        }
+
+        public List<ObterMemoriaEntity> ObterListaMemoria()
+        {
+            List<ObterMemoriaEntity> retorno = conexao.Query<ObterMemoriaEntity>
+                ("select * from Memoria where CodVisibilidade = 0").ToList();
+
+            return retorno;
+        }
+
+        public ObterMemoriaEntity ObterMemoria(EntradaObterMemoria entrada)
+        {
+            ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
+                ("select CodDetalhesMemoria from Detalhes where CodGame = @cod",
+                new { @cod = entrada.CodigoGame });
+
+            string sql = "select * from Memoria where CodMemoria = @cod and CodVisibilidade = 0";
+
+            ObterMemoriaEntity retorno = conexao.QueryFirstOrDefault<ObterMemoriaEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.CodDetalhesMemoria) });
+
+            return retorno;
         }
 
         #endregion
@@ -214,6 +257,27 @@ namespace MGL_API.db
                 return false;
             }
         }
+        public List<ObterPlacaVideoEntity> ObterListaPlacaVideo()
+        {
+            List<ObterPlacaVideoEntity> retorno = conexao.Query<ObterPlacaVideoEntity>
+                ("select * from PlacaVideo where CodVisibilidade = 0").ToList();
+
+            return retorno;
+        }
+
+        public ObterPlacaVideoEntity ObterPlacaVideo(EntradaObterPlacaVideo entrada)
+        {
+            ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
+                ("select CodDetalhesPlacaVideo from Detalhes where CodGame = @cod",
+                new { @cod = entrada.CodigoGame });
+
+            string sql = "select * from PlacaVideo where CodPlacaVideo = @cod and CodVisibilidade = 0";
+
+            ObterPlacaVideoEntity retorno = conexao.QueryFirstOrDefault<ObterPlacaVideoEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.CodDetalhesPlacaVideo) });
+
+            return retorno;
+        }
 
         #endregion
 
@@ -250,7 +314,27 @@ namespace MGL_API.db
                 return false;
             }
         }
+        public List<ObterPlataformaEntity> ObterListaPlataforma()
+        {
+            List<ObterPlataformaEntity> retorno = conexao.Query<ObterPlataformaEntity>
+                ("select * from Plataforma where CodVisibilidade = 0").ToList();
 
+            return retorno;
+        }
+
+        public ObterPlataformaEntity ObterPlataforma(EntradaObterPlataforma entrada)
+        {
+            ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
+                ("select CodDetalhesPlataforma from Detalhes where CodGame = @cod",
+                new { @cod = entrada.CodigoGame });
+
+            string sql = "select * from Plataforma where CodPlataforma = @cod and CodVisibilidade = 0";
+
+            ObterPlataformaEntity retorno = conexao.QueryFirstOrDefault<ObterPlataformaEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.CodDetalhesPlataforma) });
+
+            return retorno;
+        }
         #endregion
 
         #region GameDetail Processador
@@ -285,6 +369,27 @@ namespace MGL_API.db
             {
                 return false;
             }
+        }
+        public List<ObterProcessadorEntity> ObterListaProcessador()
+        {
+            List<ObterProcessadorEntity> retorno = conexao.Query<ObterProcessadorEntity>
+                ("select * from Processador where CodVisibilidade = 0").ToList();
+
+            return retorno;
+        }
+
+        public ObterProcessadorEntity ObterProcessador(EntradaObterProcessador entrada)
+        {
+            ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
+                ("select CodDetalhesProcessador from Detalhes where CodGame = @cod",
+                new { @cod = entrada.CodigoGame });
+
+            string sql = "select * from Processador where CodProcessador = @cod and CodVisibilidade = 0";
+
+            ObterProcessadorEntity retorno = conexao.QueryFirstOrDefault<ObterProcessadorEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.CodDetalhesProcessador) });
+
+            return retorno;
         }
 
         #endregion
@@ -322,7 +427,27 @@ namespace MGL_API.db
                 return false;
             }
         }
+        public List<ObterSOEntity> ObterListaSO()
+        {
+            List<ObterSOEntity> retorno = conexao.Query<ObterSOEntity>
+                ("select * from SO where CodVisibilidade = 0").ToList();
 
+            return retorno;
+        }
+
+        public ObterSOEntity ObterSO(EntradaObterSO entrada)
+        {
+            ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
+                ("select CodDetalhesSO from Detalhes where CodGame = @cod",
+                new { @cod = entrada.CodigoGame });
+
+            string sql = "select * from SO where CodSO = @cod and CodVisibilidade = 0";
+
+            ObterSOEntity retorno = conexao.QueryFirstOrDefault<ObterSOEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.CodDetalhesSO) });
+
+            return retorno;
+        }
         #endregion
 
         #region Game
