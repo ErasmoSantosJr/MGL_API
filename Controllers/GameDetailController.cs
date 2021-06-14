@@ -153,12 +153,12 @@ namespace MGL_API.Controllers
 
         [HttpPost]
         [Route("ObterArmazenamentoGame")]
-        public ActionResult<RetornoObterArmazenamento> ObterArmazenamento(EntradaObterArmazenamento entrada)
+        public ActionResult<RetornoObterArmazenamento> ObterArmazenamento([FromForm]  string CodigoGame)
         {
 
             #region Validar Entradas
 
-            if (entrada.CodigoGame.Equals(""))
+            if (CodigoGame == null)
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
             }
@@ -172,7 +172,7 @@ namespace MGL_API.Controllers
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
                 {
 
-                    ObterArmazenamentoEntity lista = db.ObterArmazenamento(entrada);
+                    ObterArmazenamentoEntity lista = db.ObterArmazenamento(CodigoGame);
 
 
                     retorno.CodigoArmazenamento = lista.CodArmazenamento;
@@ -372,6 +372,8 @@ namespace MGL_API.Controllers
                 return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao deletar Armazenamento." };
             }
         }
+
+
 
         #endregion
 

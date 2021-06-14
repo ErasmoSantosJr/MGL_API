@@ -94,11 +94,11 @@ namespace MGL_API.db
             return retorno;
         }
 
-        public ObterArmazenamentoEntity ObterArmazenamento(EntradaObterArmazenamento entrada)
+        public ObterArmazenamentoEntity ObterArmazenamento(string CodigoGame)
         {
             ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
                 ("select CodDetalhesArmazenamento from Detalhes where CodGame = @cod",
-                new { @cod = entrada.CodigoGame});
+                new { @cod = CodigoGame});
 
             string sql = "select * from Armazenamento where CodArmazenamento = @cod and CodVisibilidade = 0";
 
