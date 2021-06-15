@@ -209,11 +209,11 @@ namespace MGL_API.db
             return retorno;
         }
 
-        public ObterMemoriaEntity ObterMemoria(EntradaObterMemoria entrada)
+        public ObterMemoriaEntity ObterMemoria(string CodigoGame)
         {
             ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
                 ("select CodDetalhesMemoria from Detalhes where CodGame = @cod",
-                new { @cod = entrada.CodigoGame });
+                new { @cod = CodigoGame });
 
             string sql = "select * from Memoria where CodMemoria = @cod and CodVisibilidade = 0";
 

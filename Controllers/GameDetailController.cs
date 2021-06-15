@@ -488,6 +488,49 @@ namespace MGL_API.Controllers
 
         }
 
+
+        [HttpPost]
+        [Route("ObterMemoriaGame")]
+        public ActionResult<RetornoObterMemoria> ObterMemoria([FromForm] string CodigoGame)
+        {
+
+            #region Validar Entradas
+
+            if (CodigoGame == null)
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
+            }
+
+            #endregion
+
+            RetornoObterMemoria retorno = new RetornoObterMemoria();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    ObterMemoriaEntity lista = db.ObterMemoria(CodigoGame);
+
+
+                    retorno.CodigoMemoria = lista.CodMemoria;
+                    retorno.NomeMemoria = lista.NomeMemoria;
+                    retorno.Sucesso = true;
+                    retorno.Mensagem = "Lista de memoria recuperado com sucesso.";
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de memoria." };
+            }
+
+        }
+
+
+
         #endregion
 
         #region PlacaVideo

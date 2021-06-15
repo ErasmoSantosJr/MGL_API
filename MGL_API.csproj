@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\@Aula\Projetos\MGL\MGL_API\MGL_API.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Daniel\source\repos\ErasmoSantosJr\MGL_API\MGL_API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
