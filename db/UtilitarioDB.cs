@@ -452,6 +452,25 @@ namespace MGL_API.db
         }
         #endregion
 
+        #region Categoria
+        
+        public ObterCategoriaEntity ObterCategoria(string CodigoGame)
+        {
+            ObterGameEntity codigo = conexao.QueryFirstOrDefault<ObterGameEntity>
+                ("select IdCategoria_Game from Game where IdGame = @cod",
+                new { @cod = CodigoGame });
+
+            string sql = "select * from Categoria where IdCategoria = @cod";
+
+            ObterCategoriaEntity retorno = conexao.QueryFirstOrDefault<ObterCategoriaEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.IdCategoria_Game) });
+
+            return retorno;
+        }
+
+
+        #endregion
+
         #region Game
 
         //Tentei reproduzir o CadastrarUsuario mas alterando as variaveis e insert de acordo com a tabela Game do banco de dados
@@ -491,6 +510,8 @@ namespace MGL_API.db
         }
 
         #endregion
+
+
 
         public void Dispose()
         {
