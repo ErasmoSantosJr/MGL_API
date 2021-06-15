@@ -486,8 +486,9 @@ namespace MGL_API.Controllers
                 return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de memoria." };
             }
 
-            #endregion
         }
+
+        #endregion
 
         #region PlacaVideo
 
@@ -624,7 +625,7 @@ namespace MGL_API.Controllers
 
             #region Validar Entradas
 
-            if (entrada.CodigoGame.Equals(""))
+            if (CodigoGame == null)
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
             }
@@ -793,7 +794,7 @@ namespace MGL_API.Controllers
 
             #region Validar Entradas
 
-            if (entrada.CodigoGame.Equals(""))
+            if (CodigoGame == null)
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
             }
@@ -962,7 +963,7 @@ namespace MGL_API.Controllers
 
             #region Validar Entradas
 
-            if (entrada.CodigoGame.Equals(""))
+            if (CodigoGame == null)
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
             }
@@ -1131,7 +1132,7 @@ namespace MGL_API.Controllers
 
             #region Validar Entradas
 
-            if (entrada.CodigoGame.Equals(""))
+            if (CodigoGame == null)
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
             }
