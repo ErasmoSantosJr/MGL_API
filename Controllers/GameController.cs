@@ -148,13 +148,13 @@ namespace MGL_API.Controllers
 
         [HttpPost]
         [Route("ObterGame")]
-        public ActionResult<RetornoObterGame> ObterGame(EntradaObterGame entrada)
+        public ActionResult<RetornoObterGame> ObterGame([FromForm] string CodigoGame)
         {
 
             #region Valida entrada
 
 
-            if (entrada.CodigoGame.Equals(null))
+            if (CodigoGame == null)
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Necessário inserir o parâmetro CodigoGame." };
             }

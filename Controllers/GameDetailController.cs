@@ -153,7 +153,7 @@ namespace MGL_API.Controllers
 
         [HttpPost]
         [Route("ObterArmazenamentoGame")]
-        public ActionResult<RetornoObterArmazenamento> ObterArmazenamento([FromForm]  string CodigoGame)
+        public ActionResult<RetornoObterArmazenamento> ObterArmazenamento([FromForm] string CodigoGame)
         {
 
             #region Validar Entradas
@@ -1153,6 +1153,50 @@ namespace MGL_API.Controllers
                     retorno.NomeSO = lista.NomeSO;
                     retorno.Sucesso = true;
                     retorno.Mensagem = "Lista de SO recuperado com sucesso.";
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de SO." };
+            }
+
+        }
+
+        #endregion
+
+        #region Categoria
+
+        [HttpPost]
+        [Route("ObterCategoriaGame")]
+        public ActionResult<RetornoObterCategoria> ObterCategoriaGame([FromForm] string CodigoGame)
+        {
+
+            #region Validar Entradas
+
+            if (CodigoGame == null)
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
+            }
+
+            #endregion
+
+            RetornoObterCategoria retorno = new RetornoObterCategoria();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    ObterCategoriaEntity lista = db.ObterCategoria(CodigoGame);
+
+
+                    retorno.CodigoCategoria = lista.IdCategoria;
+                    retorno.NomeCategoria = lista.Nome_Categoria;
+                    retorno.Sucesso = true;
+                    retorno.Mensagem = "Categoria recuperado com sucesso.";
 
                 }
 
