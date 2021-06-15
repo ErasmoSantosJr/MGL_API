@@ -150,11 +150,12 @@ namespace MGL_API.db
 
             return retorno;
         }
-        public ObterClassificacaoEntity ObterClassificacao(EntradaObterClassificacao entrada)
+
+        public ObterClassificacaoEntity ObterClassificacao(string CodigoGame)
         {
             ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
                 ("select CodDetalhesClass from Detalhes where CodGame = @cod",
-                new { @cod = entrada.CodigoGame });
+                new { @cod = CodigoGame });
 
             string sql = "select * from Classificacao where CodClassificacao = @cod and CodVisibilidade = 0";
 
@@ -265,11 +266,11 @@ namespace MGL_API.db
             return retorno;
         }
 
-        public ObterPlacaVideoEntity ObterPlacaVideo(EntradaObterPlacaVideo entrada)
+        public ObterPlacaVideoEntity ObterPlacaVideo(string CodigoGame)
         {
             ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
                 ("select CodDetalhesPlacaVideo from Detalhes where CodGame = @cod",
-                new { @cod = entrada.CodigoGame });
+                new { @cod = CodigoGame });
 
             string sql = "select * from PlacaVideo where CodPlacaVideo = @cod and CodVisibilidade = 0";
 
@@ -314,6 +315,7 @@ namespace MGL_API.db
                 return false;
             }
         }
+
         public List<ObterPlataformaEntity> ObterListaPlataforma()
         {
             List<ObterPlataformaEntity> retorno = conexao.Query<ObterPlataformaEntity>
@@ -322,11 +324,11 @@ namespace MGL_API.db
             return retorno;
         }
 
-        public ObterPlataformaEntity ObterPlataforma(EntradaObterPlataforma entrada)
+        public ObterPlataformaEntity ObterPlataforma(string CodigoGame)
         {
             ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
                 ("select CodDetalhesPlataforma from Detalhes where CodGame = @cod",
-                new { @cod = entrada.CodigoGame });
+                new { @cod = CodigoGame });
 
             string sql = "select * from Plataforma where CodPlataforma = @cod and CodVisibilidade = 0";
 
@@ -378,11 +380,11 @@ namespace MGL_API.db
             return retorno;
         }
 
-        public ObterProcessadorEntity ObterProcessador(EntradaObterProcessador entrada)
+        public ObterProcessadorEntity ObterProcessador(string CodigoGame)
         {
             ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
                 ("select CodDetalhesProcessador from Detalhes where CodGame = @cod",
-                new { @cod = entrada.CodigoGame });
+                new { @cod = CodigoGame });
 
             string sql = "select * from Processador where CodProcessador = @cod and CodVisibilidade = 0";
 
@@ -435,11 +437,11 @@ namespace MGL_API.db
             return retorno;
         }
 
-        public ObterSOEntity ObterSO(EntradaObterSO entrada)
+        public ObterSOEntity ObterSO(string CodigoGame)
         {
             ObterDetalhesEntity codigo = conexao.QueryFirstOrDefault<ObterDetalhesEntity>
                 ("select CodDetalhesSO from Detalhes where CodGame = @cod",
-                new { @cod = entrada.CodigoGame });
+                new { @cod = CodigoGame });
 
             string sql = "select * from SO where CodSO = @cod and CodVisibilidade = 0";
 

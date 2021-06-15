@@ -319,14 +319,15 @@ namespace MGL_API.Controllers
             }
 
         }
+
         [HttpPost]
         [Route("ObterClassificacaoGame")]
-        public ActionResult<RetornoObterClassificacao> ObterClassificacao(EntradaObterClassificacao entrada)
+        public ActionResult<RetornoObterClassificacao> ObterClassificacao([FromForm] string CodigoGame)
         {
 
             #region Validar Entradas
 
-            if (entrada.CodigoGame.Equals(""))
+            if (CodigoGame == null)
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
             }
@@ -340,7 +341,7 @@ namespace MGL_API.Controllers
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
                 {
 
-                    ObterClassificacaoEntity lista = db.ObterClassificacao(entrada);
+                    ObterClassificacaoEntity lista = db.ObterClassificacao(CodigoGame);
 
 
                     retorno.CodigoClassificacao = lista.CodClassificacao;
@@ -485,7 +486,8 @@ namespace MGL_API.Controllers
                 return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de memoria." };
             }
 
-        #endregion
+            #endregion
+        }
 
         #region PlacaVideo
 
@@ -614,9 +616,10 @@ namespace MGL_API.Controllers
 
         }
 
+
         [HttpPost]
         [Route("ObterPlacaVideoGame")]
-        public ActionResult<RetornoObterPlacaVideo> ObterPlacaVideo(EntradaObterPlacaVideo entrada)
+        public ActionResult<RetornoObterPlacaVideo> ObterPlacaVideo([FromForm] string CodigoGame)
         {
 
             #region Validar Entradas
@@ -635,7 +638,7 @@ namespace MGL_API.Controllers
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
                 {
 
-                    ObterPlacaVideoEntity lista = db.ObterPlacaVideo(entrada);
+                    ObterPlacaVideoEntity lista = db.ObterPlacaVideo(CodigoGame);
 
 
                     retorno.CodigoPlacaVideo = lista.CodPlacaVideo;
@@ -785,7 +788,7 @@ namespace MGL_API.Controllers
 
         [HttpPost]
         [Route("ObterPlataformaGame")]
-        public ActionResult<RetornoObterPlataforma> ObterPlataforma(EntradaObterPlataforma entrada)
+        public ActionResult<RetornoObterPlataforma> ObterPlataforma([FromForm] string CodigoGame)
         {
 
             #region Validar Entradas
@@ -804,7 +807,7 @@ namespace MGL_API.Controllers
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
                 {
 
-                    ObterPlataformaEntity lista = db.ObterPlataforma(entrada);
+                    ObterPlataformaEntity lista = db.ObterPlataforma(CodigoGame);
 
 
                     retorno.CodigoPlataforma = lista.CodPlataforma;
@@ -954,7 +957,7 @@ namespace MGL_API.Controllers
 
         [HttpPost]
         [Route("ObterProcessadorGame")]
-        public ActionResult<RetornoObterProcessador> ObterProcessador(EntradaObterProcessador entrada)
+        public ActionResult<RetornoObterProcessador> ObterProcessador([FromForm] string CodigoGame)
         {
 
             #region Validar Entradas
@@ -973,7 +976,7 @@ namespace MGL_API.Controllers
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
                 {
 
-                    ObterProcessadorEntity lista = db.ObterProcessador(entrada);
+                    ObterProcessadorEntity lista = db.ObterProcessador(CodigoGame);
 
 
                     retorno.CodigoProcessador = lista.CodProcessador;
@@ -1123,7 +1126,7 @@ namespace MGL_API.Controllers
 
         [HttpPost]
         [Route("ObterSOGame")]
-        public ActionResult<RetornoObterSO> ObterSO(EntradaObterSO entrada)
+        public ActionResult<RetornoObterSO> ObterSO([FromForm] string CodigoGame)
         {
 
             #region Validar Entradas
@@ -1142,7 +1145,7 @@ namespace MGL_API.Controllers
                 using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
                 {
 
-                    ObterSOEntity lista = db.ObterSO(entrada);
+                    ObterSOEntity lista = db.ObterSO(CodigoGame);
 
 
                     retorno.CodigoSO = lista.CodSO;
