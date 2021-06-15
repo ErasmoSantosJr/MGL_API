@@ -109,7 +109,7 @@ namespace MGL_API.Controllers
 
         [HttpPost]
         [Route("ObterListaGame")]
-        public ActionResult<List<RetornoListaObterGame>> ObterGame()
+        public ActionResult<List<RetornoListaObterGame>> ObterListaGame()
         {
 
             List<RetornoListaObterGame> retorno = new List<RetornoListaObterGame>();
@@ -169,7 +169,7 @@ namespace MGL_API.Controllers
                 {
 
 
-                    ObterGameEntity lista = db.ObterGame();
+                    ObterGameEntity lista = db.ObterGame(CodigoGame);
 
                     retorno.CodigoGame = lista.IdGame;
                     retorno.NomeGame = lista.Nome_Game;

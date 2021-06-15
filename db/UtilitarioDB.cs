@@ -491,13 +491,21 @@ namespace MGL_API.db
         }
         //Tentando arrumar o bug na hora de exibir o game antes de continuar com a parte da avaliação
 
-        public ObterGameEntity ObterGame()
+        public ObterGameEntity ObterGame(string CodigoGame)
         {
+            ObterGameEntity codigo = conexao.QueryFirstOrDefault<ObterGameEntity>
+              ("select * from Game where IdGame = @cod",
+              new { @cod = CodigoGame });
 
-            ObterGameEntity lista = conexao.QueryFirstOrDefault<ObterGameEntity>
-                  ("select * from Game");
+            string sql = "select * from Game where IdGame = @cod";
 
-            return lista;
+            ObterGameEntity retorno = conexao.QueryFirstOrDefault<ObterGameEntity>(
+                sql, new { @cod = Convert.ToInt32(codigo.IdGame)});
+
+           // ObterGameEntity lista = conexao.QueryFirstOrDefault<ObterGameEntity>
+             //     ("select * from Game where IdGame");
+
+            return retorno;
         }
 
         public List<ObterGameEntity> ObterListaGame()
