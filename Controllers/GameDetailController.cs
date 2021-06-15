@@ -282,6 +282,82 @@ namespace MGL_API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ObterListaClassificacao")]
+        public ActionResult<List<RetornoObterClassificacao>> ObterListaClassificacao()
+        {
+
+            List<RetornoObterClassificacao> retorno = new List<RetornoObterClassificacao>();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    List<ObterClassificacaoEntity> lista = db.ObterListaClassificacao();
+
+
+                    foreach (ObterClassificacaoEntity item in lista)
+                    {
+                        retorno.Add(
+                          new RetornoObterClassificacao()
+                          {
+                              CodigoClassificacao = item.CodClassificacao,
+                              NomeClassificacao = item.NomeClassificacao,
+                              Sucesso = true,
+                              Mensagem = "Lista de classificação recuperada com sucesso."
+                          }
+                            );
+                    }
+                    return retorno;
+                }
+
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de classificação." };
+            }
+
+        }
+        [HttpPost]
+        [Route("ObterClassificacaoGame")]
+        public ActionResult<RetornoObterClassificacao> ObterClassificacao(EntradaObterClassificacao entrada)
+        {
+
+            #region Validar Entradas
+
+            if (entrada.CodigoGame.Equals(""))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
+            }
+
+            #endregion
+
+            RetornoObterClassificacao retorno = new RetornoObterClassificacao();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    ObterClassificacaoEntity lista = db.ObterClassificacao(entrada);
+
+
+                    retorno.CodigoClassificacao = lista.CodClassificacao;
+                    retorno.NomeClassificacao = lista.NomeClassificacao;
+                    retorno.Sucesso = true;
+                    retorno.Mensagem = "Lista de classificação recuperado com sucesso.";
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de classificacao." };
+            }
+
+        }
         #endregion
 
         #region Memoria
@@ -373,7 +449,41 @@ namespace MGL_API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ObterListaMemoria")]
+        public ActionResult<List<RetornoObterMemoria>> ObterListaMemoria()
+        {
 
+            List<RetornoObterMemoria> retorno = new List<RetornoObterMemoria>();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    List<ObterMemoriaEntity> lista = db.ObterListaMemoria();
+
+
+                    foreach (ObterMemoriaEntity item in lista)
+                    {
+                        retorno.Add(
+                          new RetornoObterMemoria()
+                          {
+                              CodigoMemoria = item.CodMemoria,
+                              NomeMemoria = item.NomeMemoria,
+                              Sucesso = true,
+                              Mensagem = "Lista de memoria recuperada com sucesso."
+                          }
+                            );
+                    }
+                    return retorno;
+                }
+
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de memoria." };
+            }
 
         #endregion
 
@@ -464,6 +574,84 @@ namespace MGL_API.Controllers
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao deletar PlacaVideo." };
             }
+        }
+
+        [HttpGet]
+        [Route("ObterListaPlacaVideo")]
+        public ActionResult<List<RetornoObterPlacaVideo>> ObterListaPlacaVideo()
+        {
+
+            List<RetornoObterPlacaVideo> retorno = new List<RetornoObterPlacaVideo>();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    List<ObterPlacaVideoEntity> lista = db.ObterListaPlacaVideo();
+
+
+                    foreach (ObterPlacaVideoEntity item in lista)
+                    {
+                        retorno.Add(
+                          new RetornoObterPlacaVideo()
+                          {
+                              CodigoPlacaVideo = item.CodPlacaVideo,
+                              NomePlacaVideo = item.NomePlacaVideo,
+                              Sucesso = true,
+                              Mensagem = "Lista de PlacaVideo recuperado com sucesso."
+                          }
+                            );
+                    }
+                    return retorno;
+                }
+
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de PlacaVideo." };
+            }
+
+        }
+
+        [HttpPost]
+        [Route("ObterPlacaVideoGame")]
+        public ActionResult<RetornoObterPlacaVideo> ObterPlacaVideo(EntradaObterPlacaVideo entrada)
+        {
+
+            #region Validar Entradas
+
+            if (entrada.CodigoGame.Equals(""))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
+            }
+
+            #endregion
+
+            RetornoObterPlacaVideo retorno = new RetornoObterPlacaVideo();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    ObterPlacaVideoEntity lista = db.ObterPlacaVideo(entrada);
+
+
+                    retorno.CodigoPlacaVideo = lista.CodPlacaVideo;
+                    retorno.NomePlacaVideo = lista.NomePlacaVideo;
+                    retorno.Sucesso = true;
+                    retorno.Mensagem = "Lista de PLacaVideo recuperado com sucesso.";
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de armazenamento." };
+            }
+
         }
 
         #endregion
@@ -557,6 +745,84 @@ namespace MGL_API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ObterListaPlataforma")]
+        public ActionResult<List<RetornoObterPlataforma>> ObterListaPlataforma()
+        {
+
+            List<RetornoObterPlataforma> retorno = new List<RetornoObterPlataforma>();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    List<ObterPlataformaEntity> lista = db.ObterListaPlataforma();
+
+
+                    foreach (ObterPlataformaEntity item in lista)
+                    {
+                        retorno.Add(
+                          new RetornoObterPlataforma()
+                          {
+                              CodigoPlataforma = item.CodPlataforma,
+                              NomePlataforma = item.NomePlataforma,
+                              Sucesso = true,
+                              Mensagem = "Lista de plataforma recuperado com sucesso."
+                          }
+                            );
+                    }
+                    return retorno;
+                }
+
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de plataforma." };
+            }
+
+        }
+
+        [HttpPost]
+        [Route("ObterPlataformaGame")]
+        public ActionResult<RetornoObterPlataforma> ObterPlataforma(EntradaObterPlataforma entrada)
+        {
+
+            #region Validar Entradas
+
+            if (entrada.CodigoGame.Equals(""))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
+            }
+
+            #endregion
+
+            RetornoObterPlataforma retorno = new RetornoObterPlataforma();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    ObterPlataformaEntity lista = db.ObterPlataforma(entrada);
+
+
+                    retorno.CodigoPlataforma = lista.CodPlataforma;
+                    retorno.NomePlataforma = lista.NomePlataforma;
+                    retorno.Sucesso = true;
+                    retorno.Mensagem = "Lista de plataforma recuperado com sucesso.";
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de armazenamento." };
+            }
+
+        }
+
         #endregion
 
         #region Processador
@@ -648,6 +914,84 @@ namespace MGL_API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ObterListaProcessador")]
+        public ActionResult<List<RetornoObterProcessador>> ObterListaProcessador()
+        {
+
+            List<RetornoObterProcessador> retorno = new List<RetornoObterProcessador>();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    List<ObterProcessadorEntity> lista = db.ObterListaProcessador();
+
+
+                    foreach (ObterProcessadorEntity item in lista)
+                    {
+                        retorno.Add(
+                          new RetornoObterProcessador()
+                          {
+                              CodigoProcessador = item.CodProcessador,
+                              NomeProcessador = item.NomeProcessador,
+                              Sucesso = true,
+                              Mensagem = "Lista de processador recuperado com sucesso."
+                          }
+                            );
+                    }
+                    return retorno;
+                }
+
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de processador." };
+            }
+
+        }
+
+        [HttpPost]
+        [Route("ObterProcessadorGame")]
+        public ActionResult<RetornoObterProcessador> ObterProcessador(EntradaObterProcessador entrada)
+        {
+
+            #region Validar Entradas
+
+            if (entrada.CodigoGame.Equals(""))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
+            }
+
+            #endregion
+
+            RetornoObterProcessador retorno = new RetornoObterProcessador();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    ObterProcessadorEntity lista = db.ObterProcessador(entrada);
+
+
+                    retorno.CodigoProcessador = lista.CodProcessador;
+                    retorno.NomeProcessador = lista.NomeProcessador;
+                    retorno.Sucesso = true;
+                    retorno.Mensagem = "Lista de processador recuperado com sucesso.";
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de processador." };
+            }
+
+        }
+
         #endregion
 
         #region SO
@@ -737,6 +1081,84 @@ namespace MGL_API.Controllers
             {
                 return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao deletar Sistema Operacional." };
             }
+        }
+
+        [HttpGet]
+        [Route("ObterListaSO")]
+        public ActionResult<List<RetornoObterSO>> ObterListaSO()
+        {
+
+            List<RetornoObterSO> retorno = new List<RetornoObterSO>();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    List<ObterSOEntity> lista = db.ObterListaSO();
+
+
+                    foreach (ObterSOEntity item in lista)
+                    {
+                        retorno.Add(
+                          new RetornoObterSO()
+                          {
+                              CodigoSO = item.CodSO,
+                              NomeSO = item.NomeSO,
+                              Sucesso = true,
+                              Mensagem = "Lista de SO recuperado com sucesso."
+                          }
+                            );
+                    }
+                    return retorno;
+                }
+
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de SO." };
+            }
+
+        }
+
+        [HttpPost]
+        [Route("ObterSOGame")]
+        public ActionResult<RetornoObterSO> ObterSO(EntradaObterSO entrada)
+        {
+
+            #region Validar Entradas
+
+            if (entrada.CodigoGame.Equals(""))
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.BadRequest, Content = "Parâmetro CodigoGame incorreto." };
+            }
+
+            #endregion
+
+            RetornoObterSO retorno = new RetornoObterSO();
+
+            try
+            {
+                using (UtilitarioDB db = new UtilitarioDB(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")))
+                {
+
+                    ObterSOEntity lista = db.ObterSO(entrada);
+
+
+                    retorno.CodigoSO = lista.CodSO;
+                    retorno.NomeSO = lista.NomeSO;
+                    retorno.Sucesso = true;
+                    retorno.Mensagem = "Lista de SO recuperado com sucesso.";
+
+                }
+
+                return retorno;
+            }
+            catch
+            {
+                return new ContentResult { StatusCode = (int)HttpStatusCode.InternalServerError, Content = "Erro ao obter lista de SO." };
+            }
+
         }
 
         #endregion
